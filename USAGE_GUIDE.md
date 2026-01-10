@@ -4,10 +4,14 @@
 
 ### Installation
 
-First, install the required packages:
+First, install the required packages using uv:
 
 ```bash
-pip install yfinance pandas numpy matplotlib --break-system-packages
+# Using uv (recommended)
+uv sync
+
+# Or using pip
+pip install yfinance pandas numpy matplotlib
 ```
 
 ### Basic Usage

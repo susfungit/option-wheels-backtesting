@@ -1,0 +1,12 @@
+[project]
+name = "option-wheels-backtester"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.5.0",
+    "numpy>=1.23.0",
+    "pandas>=1.5.0",
+    "yfinance>=0.2.18",
+]

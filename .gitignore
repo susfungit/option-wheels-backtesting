@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS files (macOS)
+.DS_Store
+
+# Generated backtest outputs
+# CSV files (trade history exports)
+wheel_backtest_*.csv
+*.csv
+
+# Chart/image files (plots and visualizations)
+wheel_backtest_*.png
+wheel_backtest_*.jpg
+wheel_backtest_*.jpeg
+wheel_backtest_*.svg
+wheel_backtest_*.pdf
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# uv cache
+.uv/

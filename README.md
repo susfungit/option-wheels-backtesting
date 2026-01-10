@@ -7,15 +7,15 @@ A comprehensive Python tool to backtest the Wheel Options Trading Strategy on an
 - `wheel_strategy_backtest.py` - Main backtesting engine
 - `quick_start.py` - Ready-to-run examples (TSLA, HOOD, AFRM)
 - `USAGE_GUIDE.md` - Comprehensive documentation
-- `requirements.txt` - Python dependencies
+- `pyproject.toml` - Project configuration and dependencies
 
 ## 🚀 Installation
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+# Install dependencies using uv
+uv sync
 
-# Or install individually
+# Or if you prefer pip
 pip install yfinance pandas numpy matplotlib
 ```
 
