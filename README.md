@@ -5,7 +5,9 @@ A comprehensive Python tool to backtest the Wheel Options Trading Strategy on an
 ## 📦 What's Included
 
 - `wheel_strategy_backtest.py` - Main backtesting engine
+- `main.py` - Command-line interface
 - `quick_start.py` - Ready-to-run examples (TSLA, HOOD, AFRM)
+- `tests/` - Unit tests for the backtester
 - `USAGE_GUIDE.md` - Comprehensive documentation
 - `pyproject.toml` - Project configuration and dependencies
 
@@ -44,10 +46,29 @@ The Wheel Strategy is an options income strategy:
 
 This backtester simulates this strategy week-by-week on historical data.
 
+## 🖥️ Command Line Interface
+
+```bash
+# Run backtest on any stock
+python main.py TSLA 2025-01-01 2025-12-31
+
+# With custom starting capital
+python main.py AAPL 2024-01-01 2024-12-31 --capital 50000
+
+# Skip plots and CSV export
+python main.py NVDA 2024-01-01 2024-12-31 --no-plot --no-csv
+
+# Run quick start examples
+python main.py --quick-start
+```
+
 ## 🎬 Run Examples
 
 ```bash
 # Run the pre-built examples
+python main.py --quick-start
+
+# Or run quick_start.py directly
 python quick_start.py
 ```
 
@@ -244,6 +265,19 @@ for ticker in stocks:
                        show_plot=False, export_csv=False)
     print(f"{ticker}: {m['total_return_pct']:.2f}% | "
           f"Premiums: ${m['total_premiums']:,.0f}")
+```
+
+## 🧪 Running Tests
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run with coverage report
+uv run pytest --cov
+
+# Run a specific test file
+uv run pytest tests/test_premium.py
 ```
 
 ## 🤝 Contributing

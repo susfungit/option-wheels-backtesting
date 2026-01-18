@@ -532,9 +532,19 @@ class WheelStrategyBacktest:
     
     def export_trades(self, trades_df: pd.DataFrame, filename: str = None):
         """Export trade history to CSV."""
+        import ntpath
+        import os
+
         if filename is None:
             filename = f'wheel_backtest_{self.ticker}_{self.start_date.strftime("%Y%m%d")}_{self.end_date.strftime("%Y%m%d")}.csv'
-        
+        else:
+            # Sanitize user-provided filename to prevent path traversal
+            # Use both ntpath and os.path to handle Windows and Unix separators
+            filename = ntpath.basename(filename)
+            filename = os.path.basename(filename)
+            if not filename:
+                raise ValueError("Invalid filename provided")
+
         trades_df.to_csv(filename, index=False)
         print(f"\n📁 Trade history exported to: {filename}")
         return filename

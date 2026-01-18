@@ -4,8 +4,57 @@ Wheel Strategy Backtester - Command Line Interface
 """
 
 import argparse
+import os
+import re
 import runpy
+from datetime import datetime
 from wheel_strategy_backtest import run_backtest
+
+# Constants for validation
+MIN_CAPITAL = 1000
+MAX_CAPITAL = 100_000_000
+TICKER_PATTERN = re.compile(r'^[A-Za-z]{1,5}$')
+
+
+def validate_inputs(ticker: str, start_date: str, end_date: str, capital: float) -> None:
+    """
+    Validate user inputs for security and correctness.
+
+    Raises:
+        ValueError: If any input is invalid
+    """
+    # Validate ticker format (1-5 alphabetic characters)
+    if not TICKER_PATTERN.match(ticker):
+        raise ValueError(
+            f"Invalid ticker '{ticker}'. Must be 1-5 alphabetic characters (e.g., TSLA, AAPL)"
+        )
+
+    # Validate capital range
+    if not (MIN_CAPITAL <= capital <= MAX_CAPITAL):
+        raise ValueError(
+            f"Capital must be between ${MIN_CAPITAL:,} and ${MAX_CAPITAL:,}. Got: ${capital:,.2f}"
+        )
+
+    # Parse and validate dates
+    try:
+        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError(
+            f"Invalid start date '{start_date}'. Must be in YYYY-MM-DD format"
+        )
+
+    try:
+        end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError(
+            f"Invalid end date '{end_date}'. Must be in YYYY-MM-DD format"
+        )
+
+    # Validate date order
+    if start_dt >= end_dt:
+        raise ValueError(
+            f"Start date ({start_date}) must be before end date ({end_date})"
+        )
 
 
 def main():
@@ -71,9 +120,10 @@ Examples:
     if args.quick_start:
         print("Running quick start examples...")
         print("=" * 70)
-        # Execute quick_start.py as a script
-        import runpy
-        runpy.run_path('quick_start.py', run_name='__main__')
+        # Execute quick_start.py as a script using absolute path
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        quick_start_path = os.path.join(script_dir, 'quick_start.py')
+        runpy.run_path(quick_start_path, run_name='__main__')
         return
     
     # Validate required arguments
@@ -86,13 +136,20 @@ Examples:
         print("or use --quick-start to run examples.\n")
         return
     
+    # Validate inputs
+    try:
+        validate_inputs(args.ticker, args.start_date, args.end_date, args.capital)
+    except ValueError as e:
+        print(f"\nERROR: {e}")
+        return 1
+
     # Run backtest
     print(f"\n{'='*70}")
     print(f"Running backtest for {args.ticker}")
     print(f"Period: {args.start_date} to {args.end_date}")
     print(f"Initial Capital: ${args.capital:,.2f}")
     print(f"{'='*70}\n")
-    
+
     try:
         trades, metrics = run_backtest(
             ticker=args.ticker,
